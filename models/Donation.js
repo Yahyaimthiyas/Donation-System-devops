@@ -11,14 +11,34 @@ const donationSchema = new mongoose.Schema({
     ref: 'Drive',
     required: true,
   },
+  type: {
+    type: String,
+    enum: ['monetary', 'item'],
+    default: 'monetary',
+  },
   amount: {
     type: Number,
-    required: true,
+    required: function() { return this.type === 'monetary'; },
   },
+  items: [{
+    name: String,
+    quantity: String
+  }],
   paymentMethod: {
     type: String,
-    required: true,
-    enum: ['UPI', 'Credit Card', 'PayPal'],
+    required: function() { return this.type === 'monetary'; },
+    enum: ['Razorpay', 'UPI', 'Credit Card', 'PayPal', 'N/A'],
+  },
+  transactionId: {
+    type: String, // To store razorpay_payment_id
+  },
+  orderId: {
+    type: String, // To store razorpay_order_id
+  },
+  status: {
+    type: String,
+    enum: ['pending', 'completed', 'delivered'],
+    default: 'pending',
   },
   date: {
     type: Date,

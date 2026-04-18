@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import AppWrapper from './App'; // Import AppWrapper from App.js
-import reportWebVitals from './reportWebVitals';
-
+import './styles/Theme.css';
+import AppWrapper from './App';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -12,5 +11,3 @@ root.render(
     </BrowserRouter>
   </React.StrictMode>
 );
-
-reportWebVitals();

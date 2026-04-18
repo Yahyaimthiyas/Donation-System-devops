@@ -1,9 +1,20 @@
 import React, { useState, useEffect, useContext } from 'react';
 import io from 'socket.io-client';
-import axios from 'axios';
+import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
-import { FaBell, FaCheckCircle, FaDonate, FaFolder } from 'react-icons/fa'; // Icons for notification types
-
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Bell, 
+  CheckCircle2, 
+  Heart, 
+  Target, 
+  BellRing, 
+  Clock, 
+  Trash2, 
+  MailOpen,
+  Mail,
+  Filter
+} from 'lucide-react';
 
 const Notifications = () => {
   const { user } = useContext(AuthContext);
@@ -12,182 +23,177 @@ const Notifications = () => {
   const [error, setError] = useState('');
   const [socket, setSocket] = useState(null);
 
-  // Fetch initial notifications
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          setError('You must be logged in to view notifications');
-          setLoading(false);
-          return;
-        }
-
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/notifications`, {
-          headers: { 'x-auth-token': token },
-          credentials: 'include',
-        });
-
-        setNotifications(res.data);
+        const res = await api.get('/notifications');
+        const data = res.data.data || res.data;
+        setNotifications(data);
       } catch (err) {
-        setError('Failed to fetch notifications');
-        console.error(err.message);
+        setError('Unable to fetch your activity feed.');
       } finally {
         setLoading(false);
       }
     };
-
     fetchNotifications();
   }, []);
 
-  // Set up Socket.IO for real-time notifications
   useEffect(() => {
     if (!user) return;
-
     const newSocket = io(process.env.REACT_APP_API_URL, {
       auth: { token: localStorage.getItem('token') },
     });
     setSocket(newSocket);
 
     newSocket.on('connect', () => {
-      console.log('Connected to Socket.IO server');
       newSocket.emit('join', user.id);
     });
 
     newSocket.on('notification', (notification) => {
-      setNotifications((prev) => {
-        const exists = prev.find((n) => n._id === notification._id);
-        if (exists) {
-          return prev.map((n) => (n._id === notification._id ? notification : n));
-        }
-        return [notification, ...prev];
-      });
+      setNotifications(prev => [notification, ...prev.filter(n => n._id !== notification._id)]);
     });
 
-    newSocket.on('disconnect', () => {
-      console.log('Disconnected from Socket.IO server');
-    });
-
-    return () => {
-      newSocket.disconnect();
-    };
+    return () => newSocket.disconnect();
   }, [user]);
 
-  // Mark a single notification as read
-  const markAsRead = async (notificationId) => {
+  const markAsRead = async (id) => {
     try {
-      const token = localStorage.getItem('token');
-      const res = await axios.put(
-        `${process.env.REACT_APP_API_URL}/api/notifications/${notificationId}/read`,
-        {},
-        {
-          headers: { 'x-auth-token': token },
-          credentials: 'include',
-        }
-      );
-
-      setNotifications((prev) =>
-        prev.map((n) => (n._id === notificationId ? { ...n, read: res.data.read } : n))
-      );
-    } catch (err) {
-      console.error('Failed to mark notification as read:', err.message);
-    }
+      await api.put(`/notifications/${id}/read`);
+      setNotifications(prev => prev.map(n => n._id === id ? { ...n, read: true } : n));
+    } catch (err) { console.error(err); }
   };
 
-  // Mark all notifications as read
   const markAllAsRead = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const unreadNotifications = notifications.filter((n) => !n.read);
-      if (unreadNotifications.length === 0) return;
-
-      // Batch update all unread notifications
-      await Promise.all(
-        unreadNotifications.map((notification) =>
-          axios.put(
-            `${process.env.REACT_APP_API_URL}/api/notifications/${notification._id}/read`,
-            {},
-            {
-              headers: { 'x-auth-token': token },
-              credentials: 'include',
-            }
-          )
-        )
-      );
-
-      setNotifications((prev) =>
-        prev.map((n) => (n.read ? n : { ...n, read: true }))
-      );
-    } catch (err) {
-      console.error('Failed to mark all notifications as read:', err.message);
-    }
+      const unread = notifications.filter(n => !n.read);
+      await Promise.all(unread.map(n => api.put(`/notifications/${n._id}/read`)));
+      setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+    } catch (err) { console.error(err); }
   };
 
-  // Get icon based on notification type
   const getNotificationIcon = (type) => {
     switch (type) {
-      case 'drive':
-        return <FaFolder className="notification-icon drive" />;
-      case 'approval':
-        return <FaCheckCircle className="notification-icon approval" />;
-      case 'donation':
-        return <FaDonate className="notification-icon donation" />;
-      default:
-        return <FaBell className="notification-icon default" />;
+      case 'drive': return <Target size={20} className="text-primary" />;
+      case 'approval': return <CheckCircle2 size={20} className="text-secondary" />;
+      case 'donation': return <Heart size={20} style={{ color: '#ec4899' }} />;
+      default: return <Bell size={20} className="text-muted" />;
     }
   };
 
-  if (loading) return <p className="loading">Loading...</p>;
-  if (error) return <p className="error">{error}</p>;
+  if (loading) return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+      <div className="fade-in" style={{ color: 'var(--primary)', fontWeight: '600' }}>Retrieving your feed...</div>
+    </div>
+  );
 
-  const unreadCount = notifications.filter((n) => !n.read).length;
+  const unreadCount = notifications.filter(n => !n.read).length;
 
   return (
-    <div className="notifications-container">
-      <div className="notifications-header">
-        <h1>
-          <FaBell className="header-icon" /> Notifications
-          {unreadCount > 0 && <span className="unread-badge">{unreadCount}</span>}
-        </h1>
+    <motion.div 
+      className="page-transition-wrapper container"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      style={{ paddingBottom: '80px', maxWidth: '800px' }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--primary)', fontWeight: '700', fontSize: '14px', marginBottom: '4px' }}>
+            <BellRing size={18} /> UPDATES
+          </div>
+          <h1 style={{ fontSize: '32px', fontWeight: '800', display: 'flex', alignItems: 'center', gap: '12px' }}>
+            Notifications
+            {unreadCount > 0 && <span style={{ fontSize: '12px', background: 'var(--primary)', color: 'white', padding: '4px 10px', borderRadius: '20px' }}>{unreadCount} New</span>}
+          </h1>
+        </div>
+        
         {unreadCount > 0 && (
-          <button onClick={markAllAsRead} className="mark-all-read-btn">
-            Mark All as Read
+          <button 
+            onClick={markAllAsRead}
+            className="btn-primary" 
+            style={{ padding: '8px 16px', fontSize: '14px', background: 'none', border: '1px solid var(--border)', color: 'var(--text-main)' }}
+          >
+            <MailOpen size={16} /> Mark all read
           </button>
         )}
       </div>
-      {notifications.length > 0 ? (
-        <ul className="notification-list">
-          {notifications.map((notification) => (
-            <li
-              key={notification._id}
-              className={`notification-card ${notification.read ? 'read' : 'unread'}`}
-            >
-              <div className="notification-content">
-                <div className="notification-icon-wrapper">
-                  {getNotificationIcon(notification.type)}
+
+      {error && <div style={{ color: 'var(--error)', background: 'rgba(239, 68, 68, 0.1)', padding: '16px', borderRadius: '8px', marginBottom: '32px' }}>{error}</div>}
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <AnimatePresence>
+          {notifications.length > 0 ? (
+            notifications.map((notif, idx) => (
+              <motion.div
+                key={notif._id}
+                layout
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ delay: idx * 0.05 }}
+                className="glass-card"
+                style={{ 
+                  padding: '20px', 
+                  display: 'flex', 
+                  flexDirection: 'column',
+                  gap: '16px',
+                  background: notif.read ? 'white' : 'rgba(99, 102, 241, 0.03)',
+                  border: notif.read ? '1px solid var(--border)' : '1px solid rgba(99, 102, 241, 0.1)'
+                }}
+              >
+                <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start' }}>
+                  <div style={{ 
+                    width: '48px', 
+                    height: '48px', 
+                    borderRadius: '12px', 
+                    background: notif.read ? 'rgba(0,0,0,0.03)' : 'rgba(99, 102, 241, 0.1)', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center' 
+                  }}>
+                    {getNotificationIcon(notif.type)}
+                  </div>
+                  <div>
+                    <p style={{ fontSize: '15px', color: 'var(--text-main)', marginBottom: '4px', fontWeight: notif.read ? '400' : '600' }}>{notif.message}</p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'var(--text-muted)' }}>
+                      <Clock size={12} /> {new Date(notif.createdAt).toLocaleString()}
+                    </div>
+                  </div>
                 </div>
-                <div className="notification-details">
-                  <p className="notification-message">{notification.message}</p>
-                  <small className="notification-timestamp">
-                    {new Date(notification.createdAt).toLocaleString()}
-                  </small>
-                </div>
-              </div>
-              {!notification.read && (
-                <button
-                  onClick={() => markAsRead(notification._id)}
-                  className="mark-read-btn"
-                >
-                  Mark as Read
-                </button>
-              )}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="no-notifications">No notifications to display.</p>
-      )}
-    </div>
+                
+                  <div style={{ alignSelf: 'flex-end', display: 'flex', gap: '8px' }}>
+                    {!notif.read && (
+                      <motion.button 
+                        whileHover={{ scale: 1.1 }}
+                        onClick={() => markAsRead(notif._id)}
+                        style={{ 
+                          background: 'rgba(99, 102, 241, 0.05)', 
+                          color: 'var(--primary)', 
+                          cursor: 'pointer', 
+                          padding: '10px',
+                          borderRadius: '8px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          fontSize: '13px',
+                          fontWeight: '600'
+                        }}
+                      >
+                        <Mail size={16} /> Mark as read
+                      </motion.button>
+                    )}
+                  </div>
+              </motion.div>
+            ))
+          ) : (
+            <div style={{ textAlign: 'center', padding: '100px 40px', opacity: 0.5 }}>
+              <Bell size={48} style={{ margin: '0 auto 20px' }} />
+              <h3 style={{ fontSize: '18px', fontWeight: '700' }}>All Caught Up!</h3>
+              <p>When you have activity on your drives, they'll appear here.</p>
+            </div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
   );
 };
 

@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+client/node_modules/
+npm-debug.log*
+
+# Environment Variables
+.env
+
+# Build Artifacts
+build/
+client/build/
+dist/
+
+# OS Specific Files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker
+.docker/

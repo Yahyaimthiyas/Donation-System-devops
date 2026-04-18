@@ -1,169 +1,112 @@
-import React, { useState } from 'react';
-import { FaFacebookF, FaInstagram, FaWhatsapp } from 'react-icons/fa';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { 
+  Heart, 
+  Users, 
+  Target, 
+  IndianRupee,
+  MapPin,
+  ShieldCheck,
+  TrendingUp
+} from 'lucide-react';
 
-const DriveCard = ({ drive, onUpdate }) => {
-  const [showShare, setShowShare] = useState(false);
-  const [showDonate, setShowDonate] = useState(false);
-  const [amount, setAmount] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('');
-  const [error, setError] = useState('');
-
-  const handleShare = (platform) => {
-    const url = `${window.location.origin}/drive/${drive._id}`;
-    let shareUrl = '';
-    switch (platform) {
-      case 'facebook':
-        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
-        break;
-      case 'instagram':
-        shareUrl = `https://www.instagram.com/share?url=${encodeURIComponent(url)}`;
-        break;
-      case 'whatsapp':
-        shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(`Check out this drive: ${drive.title} - ${url}`)}`;
-        break;
-      default:
-        break;
-    }
-    if (shareUrl) window.open(shareUrl, '_blank');
-    setShowShare(false);
-  };
-
-  const handleDonate = async (e) => {
-    e.preventDefault();
-    setError('');
-
-    if (!amount || !paymentMethod) {
-      setError('Please enter an amount and select a payment method');
-      return;
-    }
-
-    const parsedAmount = Number(amount);
-    if (isNaN(parsedAmount) || parsedAmount <= 0) {
-      setError('Please enter a valid positive amount');
-      return;
-    }
-
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        setError('You must be logged in to donate');
-        return;
-      }
-
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/drives/${drive._id}/donate`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': token,
-        },
-        body: JSON.stringify({ amount: parsedAmount, paymentMethod }),
-        credentials: 'include',
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.msg || 'Failed to process donation');
-      }
-
-      const data = await res.json();
-      if (onUpdate) onUpdate(data);
-      setShowDonate(false);
-      setAmount('');
-      setPaymentMethod('');
-      alert('Donation successful!');
-    } catch (err) {
-      setError(`Failed to donate: ${err.message}. Check network tab for details.`);
-    }
-  };
-
-  const progress = drive.monetaryGoal ? ((drive.raisedAmount || 0) / drive.monetaryGoal) * 100 : 0;
+const DriveCard = ({ drive }) => {
+  const navigate = useNavigate();
+  const progress = drive.monetaryGoal ? Math.min(((drive.raisedAmount || 0) / drive.monetaryGoal) * 100, 100) : 0;
 
   return (
-    <div className="drive-card">
-      <img src={drive.images[0] || 'https://via.placeholder.com/150'} alt={drive.title} className="drive-image" />
-      <div className="drive-content">
-        <h3 className="drive-title">{drive.title}</h3>
-        <p className="drive-creator">By {drive.creator?.name || 'Unknown'}</p>
-        <p className="drive-description">{drive.description.substring(0, 100)}{drive.description.length > 100 ? '...' : ''}</p>
-        <div className="drive-stats">
-          <span className="drive-raised">₹{drive.raisedAmount || 0} Raised of ₹{drive.monetaryGoal || 0}</span>
-          <span className="drive-backers">{drive.backers || 0} Backers</span>
-        </div>
-        <div className="progress-bar">
-          <div className="progress" style={{ width: `${progress}%` }}></div>
-        </div>
-        <div className="drive-actions">
-          <button className="share-btn" onClick={() => setShowShare(true)}>Share</button>
-          <button className="donate-btn" onClick={() => setShowDonate(true)}>Donate Now</button>
+    <motion.div 
+      className="glass-card"
+      whileHover={{ y: -8 }}
+      transition={{ duration: 0.3 }}
+      onClick={() => navigate(`/drives/${drive._id}`)}
+      style={{ overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', cursor: 'pointer' }}
+    >
+      <div style={{ position: 'relative', height: '220px', overflow: 'hidden' }}>
+        <img 
+          src={drive.coverImage || drive.images?.[0] || 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=800&auto=format&fit=crop'} 
+          alt={drive.title} 
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+        />
+        
+        {/* Badges Overlay */}
+        <div style={{ position: 'absolute', top: '12px', left: '12px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <div style={{ 
+            padding: '4px 12px', 
+            borderRadius: '20px', 
+            background: 'rgba(255,255,255,0.95)', 
+            fontSize: '11px', 
+            fontWeight: '800',
+            color: 'var(--primary)',
+            textTransform: 'uppercase',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+          }}>
+             {drive.category}
+          </div>
+          {drive.urgency === 'Critical' && (
+            <div style={{ 
+              padding: '4px 12px', 
+              borderRadius: '20px', 
+              background: '#ef4444', 
+              fontSize: '11px', 
+              fontWeight: '800',
+              color: 'white',
+              textTransform: 'uppercase',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+            }}>
+               Critical
+            </div>
+          )}
         </div>
       </div>
 
-      {showShare && (
-        <div className="share-modal">
-          <div className="share-content">
-            <h4>Share on:</h4>
-            <button onClick={() => handleShare('facebook')}><FaFacebookF /> Facebook</button>
-            <button onClick={() => handleShare('instagram')}><FaInstagram /> Instagram</button>
-            <button onClick={() => handleShare('whatsapp')}><FaWhatsapp /> WhatsApp</button>
-            <button onClick={() => setShowShare(false)}>Close</button>
+      <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--success)', fontWeight: '700', fontSize: '12px' }}>
+            <ShieldCheck size={14} /> Verified Cause
           </div>
         </div>
-      )}
 
-      {showDonate && (
-        <div className="donate-modal">
-          <div className="modal-content">
-            <h4>Donate to {drive.title}</h4>
-            <form onSubmit={handleDonate}>
-              <div className="form-group">
-                <label>Amount (₹)</label>
-                <div className="preset-amounts">
-                  {[100, 500, 1000].map((preset) => (
-                    <button
-                      key={preset}
-                      type="button"
-                      className={`preset-btn ${amount === preset.toString() ? 'selected' : ''}`}
-                      onClick={() => setAmount(preset.toString())}
-                    >
-                      ₹{preset}
-                    </button>
-                  ))}
-                </div>
-                <input
-                  type="number"
-                  className="amount-input"
-                  placeholder="Enter custom amount"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  min="1"
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>Payment Method</label>
-                <div className="payment-options">
-                  {['UPI', 'Credit Card', 'PayPal'].map((method) => (
-                    <button
-                      key={method}
-                      type="button"
-                      className={`payment-btn ${paymentMethod === method ? 'selected' : ''}`}
-                      onClick={() => setPaymentMethod(method)}
-                    >
-                      {method}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              {error && <p className="error-message">{error}</p>}
-              <div className="modal-actions">
-                <button type="submit" className="donate-modal-btn">Donate</button>
-                <button type="button" className="cancel-btn" onClick={() => setShowDonate(false)}>Cancel</button>
-              </div>
-            </form>
+        <h3 style={{ fontSize: '18px', fontWeight: '800', marginBottom: '12px', color: 'var(--text-main)', lineHeight: 1.4, height: '50px', overflow: 'hidden' }}>
+          {drive.title}
+        </h3>
+
+        <div style={{ display: 'flex', gap: '16px', color: 'var(--text-muted)', fontSize: '13px', marginBottom: '20px' }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><MapPin size={14} /> {drive.city || drive.location}</span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><TrendingUp size={14} /> {drive.donations?.length || 0} Backers</span>
+        </div>
+
+        <div style={{ marginTop: 'auto' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '8px', fontWeight: '700' }}>
+             <span style={{ color: 'var(--text-main)' }}>₹{(drive.raisedAmount || 0).toLocaleString()} <span style={{ fontWeight: '400', color: 'var(--text-muted)' }}>raised</span></span>
+             <span style={{ color: 'var(--primary)' }}>{Math.round(progress)}%</span>
+          </div>
+          
+          <div style={{ width: '100%', height: '8px', background: '#f1f5f9', borderRadius: '4px', overflow: 'hidden', marginBottom: '20px' }}>
+             <motion.div 
+               initial={{ width: 0 }}
+               animate={{ width: `${progress}%` }}
+               style={{ height: '100%', background: 'linear-gradient(90deg, var(--primary), #818cf8)', borderRadius: '4px' }} 
+             />
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+             <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+               <span style={{ display: 'block', fontWeight: '800', color: 'var(--text-main)', fontSize: '14px' }}>₹{drive.monetaryGoal?.toLocaleString()}</span>
+               Goal Amount
+             </div>
+             <div style={{ fontSize: '12px', color: 'var(--text-muted)', textAlign: 'right' }}>
+               <span style={{ display: 'block', fontWeight: '800', color: 'var(--text-main)', fontSize: '14px' }}>{Math.ceil((new Date(drive.endDate) - new Date()) / (1000 * 60 * 60 * 24))}</span>
+               Days Left
+             </div>
           </div>
         </div>
-      )}
-    </div>
+      </div>
+    </motion.div>
   );
 };
 
