@@ -1,0 +1,1236 @@
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f7fb;
+  color: #333;
+}
+
+/* App Container */
+.app-container {
+  min-height: 100vh;
+}
+
+/* Navigation */
+.navbar {
+  background-color: #1e40af;
+  color: white;
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+.nav-links li {
+  margin-left: 1.5rem;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: #e67e22;
+  text-decoration: underline;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: color 0.3s;
+}
+
+.logout-btn:hover {
+  color: #e67e22;
+  text-decoration: underline;
+}
+
+/* Main Content */
+.main-content {
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Loading State */
+.loading {
+  text-align: center;
+  font-size: 1.2em;
+  color: #333;
+  padding: 20px;
+}
+
+.error {
+  text-align: center;
+  color: #dc2626;
+  padding: 20px;
+}
+
+/* Page Title */
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e40af;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Drive List Page */
+.drive-list {
+  padding: 2rem 0;
+}
+
+.drives-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 0 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Drive Card */
+.drive-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.drive-card:hover {
+  transform: translateY(-5px);
+}
+
+.drive-image {
+  width: 100%;
+  height: 180px; /* Reduced height for compactness */
+  object-fit: cover;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.drive-content {
+  padding: 1rem;
+  text-align: left;
+}
+
+.drive-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e40af;
+  margin-bottom: 0.5rem;
+}
+
+.drive-creator {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.drive-description {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+}
+
+.drive-stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.drive-raised {
+  color: #16a34a;
+  font-weight: 500;
+}
+
+.drive-backers {
+  color: #1e40af;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: #e5e7eb;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  background-color: #1e40af;
+  border-radius: 4px;
+}
+
+/* Drive Actions */
+.drive-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.share-btn,
+.donate-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.share-btn {
+  background-color: #1e40af;
+  color: #fff;
+}
+
+.share-btn:hover {
+  background-color: #1e3a8a;
+}
+
+.donate-btn {
+  background-color: #f97316;
+  color: #fff;
+}
+
+.donate-btn:hover {
+  background-color: #ea580c;
+}
+
+/* Share Modal */
+.share-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.share-content {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.share-content h4 {
+  font-size: 1.2rem;
+  color: #1e40af;
+  margin-bottom: 1rem;
+}
+
+.share-content button {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  background-color: #1e40af;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.share-content button:hover {
+  background-color: #1e3a8a;
+}
+
+.share-content button:last-child {
+  background-color: #6b7280;
+}
+
+.share-content button:last-child:hover {
+  background-color: #4b5563;
+}
+
+/* Donate Modal */
+.donate-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.modal-content h4 {
+  font-size: 1.2rem;
+  color: #1e40af;
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.preset-amounts,
+.payment-options {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.preset-btn,
+.payment-btn {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f3f4f6;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.preset-btn.selected,
+.payment-btn.selected {
+  background-color: #1e40af;
+  color: white;
+  border-color: #1e40af;
+}
+
+.preset-btn:hover,
+.payment-btn:hover {
+  background-color: #e0e7ff;
+}
+
+.amount-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.error-message {
+  color: #dc2626;
+  margin-bottom: 10px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.donate-modal-btn {
+  padding: 10px 20px;
+  background-color: #f97316;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.donate-modal-btn:hover {
+  background-color: #ea580c;
+}
+
+.cancel-btn {
+  padding: 10px 20px;
+  background-color: #6b7280;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cancel-btn:hover {
+  background-color: #4b5563;
+}
+
+/* Admin Dashboard */
+.admin-dashboard {
+  padding: 2rem 0;
+}
+
+.admin-drives-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 0 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.admin-drive-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.admin-drive-card:hover {
+  transform: translateY(-5px);
+}
+
+.admin-drive-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-drive-content {
+  padding: 1rem;
+  text-align: left;
+}
+
+.admin-drive-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e40af;
+  margin-bottom: 0.5rem;
+}
+
+.admin-drive-creator,
+.admin-drive-location,
+.admin-drive-goal,
+.admin-drive-raised,
+.admin-drive-backers,
+.admin-drive-comment {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.25rem;
+}
+
+.admin-drive-status {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.25rem;
+}
+
+.status-approved {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.status-pending {
+  color: #f59e0b;
+  font-weight: 600;
+}
+
+.status-declined {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.admin-drive-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.approve-btn,
+.decline-btn,
+.delete-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.approve-btn {
+  background-color: #16a34a;
+  color: white;
+}
+
+.approve-btn:hover:not(.disabled) {
+  background-color: #13863b;
+}
+
+.decline-btn {
+  background-color: #dc2626;
+  color: white;
+}
+
+.decline-btn:hover:not(.disabled) {
+  background-color: #b91c1c;
+}
+
+.delete-btn {
+  background-color: #6b7280;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #4b5563;
+}
+
+.approve-btn.disabled,
+.decline-btn.disabled {
+  background-color: #d1d5db;
+  cursor: not-allowed;
+}
+
+/* Create Drive Page */
+.create-drive-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.create-drive-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1e40af;
+  margin-bottom: 1.5rem;
+}
+
+.create-drive-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.image-preview {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.preview-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.item-input {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.item-input input {
+  flex-grow: 1;
+}
+
+.item-input button {
+  padding: 0.5rem 1rem;
+  background-color: #1e40af;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.item-input button:hover {
+  background-color: #1e3a8a;
+}
+
+.item-list {
+  list-style: none;
+  margin-top: 0.5rem;
+}
+
+.item-list li {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.submit-btn {
+  padding: 0.75rem;
+  background-color: #1e40af;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #1e3a8a;
+}
+
+.error-message {
+  color: #dc2626;
+  margin-bottom: 1rem;
+}
+
+/* My Drives Page */
+.my-drives-container {
+  padding: 2rem 0;
+}
+
+.my-drives-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 0 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.my-drive-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.my-drive-card:hover {
+  transform: translateY(-5px);
+}
+
+.my-drive-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.my-drive-content {
+  padding: 1rem;
+  text-align: left;
+}
+
+.my-drive-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e40af;
+  margin-bottom: 0.5rem;
+}
+
+.my-drive-status,
+.my-drive-location,
+.my-drive-goal,
+.my-drive-raised,
+.my-drive-backers {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.25rem;
+}
+
+.status-approved {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.status-pending {
+  color: #f59e0b;
+  font-weight: 600;
+}
+
+.status-declined {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+/* Statistics Page */
+.statistics-container {
+  padding: 2rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.stat-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1e40af;
+  margin-top: 0.5rem;
+}
+
+/* Notifications Page */
+.notifications-container {
+  padding: 2rem;
+}
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.notification-item {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.notification-text {
+  font-size: 1rem;
+  color: #333;
+}
+
+.notification-date {
+  font-size: 0.875rem;
+  color: #666;
+  margin-top: 0.25rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    margin-top: 10px;
+  }
+
+  .nav-links li {
+    margin: 10px 0;
+  }
+
+  .logo {
+    margin-bottom: 10px;
+  }
+
+  .drives-grid,
+  .admin-drives-grid,
+  .my-drives-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .drive-card,
+  .admin-drive-card,
+  .my-drive-card {
+    width: 100%;
+  }
+
+  .drive-image,
+  .admin-drive-image,
+  .my-drive-image {
+    height: 150px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.leaderboard {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.leaderboard-section {
+  margin-bottom: 40px;
+}
+
+.leaderboard-section h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.leaderboard-list {
+  list-style: none;
+  padding: 0;
+}
+
+.leaderboard-item {
+  padding: 10px;
+  background: #f9f9f9;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+.loading, .error {
+  text-align: center;
+  color: #d9534f;
+}
+.notifications-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: 'Arial', sans-serif;
+}
+
+.notifications-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 10px;
+}
+
+.notifications-header h1 {
+  font-size: 2rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-icon {
+  color: #007bff;
+}
+
+.unread-badge {
+  background-color: #ff4d4f;
+  color: white;
+  font-size: 0.9rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-left: 10px;
+}
+
+.mark-all-read-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.mark-all-read-btn:hover {
+  background-color: #218838;
+}
+
+.notification-list {
+  list-style: none;
+  padding: 0;
+}
+
+.notification-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.notification-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.notification-card.read {
+  background: #f5f5f5;
+  opacity: 0.85;
+}
+
+.notification-card.unread {
+  background: #e6f0fa;
+  border-left: 4px solid #007bff;
+}
+
+.notification-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+}
+
+.notification-icon-wrapper {
+  font-size: 1.5rem;
+}
+
+.notification-icon.drive {
+  color: #ff9800; /* Orange for drive-related notifications */
+}
+
+.notification-icon.approval {
+  color: #28a745; /* Green for approval notifications */
+}
+
+.notification-icon.donation {
+  color: #e91e63; /* Pink for donation notifications */
+}
+
+.notification-icon.default {
+  color: #666; /* Gray for others */
+}
+
+.notification-details {
+  flex: 1;
+}
+
+.notification-message {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.notification-timestamp {
+  display: block;
+  color: #777;
+  font-size: 0.85rem;
+  margin-top: 5px;
+}
+
+.mark-read-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.mark-read-btn:hover {
+  background-color: #0056b3;
+}
+
+.no-notifications {
+  text-align: center;
+  color: #666;
+  font-size: 1.1rem;
+  margin-top: 20px;
+}
+
+.loading,
+.error {
+  text-align: center;
+  color: #d9534f;
+  font-size: 1.1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .notifications-container {
+    padding: 10px;
+  }
+
+  .notifications-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .notification-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .notification-content {
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+  }
+
+  .mark-read-btn {
+    margin-top: 10px;
+    align-self: flex-end;
+  }
+}
+
+/* about page */
+.about-wrapper {
+  font-family: 'Arial', sans-serif;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  padding-top: 20px;
+}
+
+.about-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Hero Section */
+.about-hero-section {
+  text-align: center;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.about-title {
+  font-size: 2rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.title-icon {
+  color: #007bff;
+}
+
+.about-subtitle {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+/* Card Section */
+.about-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  transition: transform 0.3s ease;
+}
+
+.about-card:hover {
+  transform: translateY(-3px);
+}
+
+.section-title {
+  font-size: 1.5rem;
+  color: #007bff;
+  margin-bottom: 15px;
+}
+
+.section-text {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+/* Values Grid */
+.values-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.value-item {
+  flex: 1 1 200px;
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 5px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.value-item:hover {
+  background-color: #e6f0fa;
+}
+
+.value-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.value-icon.transparency {
+  color: #28a745;
+}
+
+.value-icon.community {
+  color: #007bff;
+}
+
+.value-icon.simplicity {
+  color: #ff9800;
+}
+
+.value-item h3 {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.value-item p {
+  font-size: 0.95rem;
+  color: #666;
+}
+
+/* CTA Section */
+.about-cta-section {
+  text-align: center;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.cta-btn {
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.cta-btn.primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.cta-btn.primary:hover {
+  background-color: #0056b3;
+}
+
+.cta-btn.secondary {
+  background-color: #28a745;
+  color: white;
+}
+
+.cta-btn.secondary:hover {
+  background-color: #218838;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .about-container {
+    padding: 10px;
+  }
+
+  .about-title {
+    font-size: 1.5rem;
+  }
+
+  .about-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+  }
+
+  .section-text {
+    font-size: 0.9rem;
+  }
+
+  .value-item h3 {
+    font-size: 1.1rem;
+  }
+
+  .value-item p {
+    font-size: 0.85rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .cta-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
