@@ -69,7 +69,7 @@
         {
           "expr": "histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket[5m])) by (le, route))",
           "legendFormat": "{{route}}"
-        }
+"        }
       ]
     },
     {
@@ -79,8 +79,8 @@
       "datasource": "Prometheus",
       "targets": [
         {
-          "expr": "container_memory_usage_bytes{container_label_com_docker_compose_service=~\"backend|frontend|jenkins|prometheus|grafana|cadvisor|mongodb.*\"}",
-          "legendFormat": "{{container_label_com_docker_compose_service}}"
+          "expr": "container_memory_usage_bytes{id!=\"/\"}",
+          "legendFormat": "{{name}}"
         }
       ],
       "fieldConfig": {
@@ -96,8 +96,8 @@
       "datasource": "Prometheus",
       "targets": [
         {
-          "expr": "rate(container_cpu_usage_seconds_total{container_label_com_docker_compose_service=~\"backend|frontend|jenkins|prometheus|grafana|cadvisor|mongodb.*\"}[1m]) * 100",
-          "legendFormat": "{{container_label_com_docker_compose_service}}"
+          "expr": "rate(container_cpu_usage_seconds_total{id!=\"/\"}[1m]) * 100",
+          "legendFormat": "{{name}}"
         }
       ],
       "fieldConfig": {
@@ -116,5 +116,5 @@
   "timezone": "",
   "title": "DevOps Dashboard",
   "uid": "devops_monitor_1",
-  "version": 6
+  "version": 7
 }
