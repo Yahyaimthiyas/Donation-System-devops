@@ -5,6 +5,7 @@ pipeline {
         PORT = '5000'
         NODE_ENV = 'production'
         REACT_APP_API_URL = 'http://172.27.240.23:5000'
+        CLIENT_URL = 'http://172.27.240.23:3000'
     }
 
     stages {
@@ -59,6 +60,7 @@ pipeline {
                         echo "MONGO_URI=${DB_URI}" >> .env
                         echo "JWT_SECRET=${JWT_KEY}" >> .env
                         echo "REACT_APP_API_URL=${REACT_APP_API_URL}" >> .env
+                        echo "CLIENT_URL=${CLIENT_URL}" >> .env
                         echo "RAZORPAY_KEY_ID=${RZP_ID}" >> .env
                         echo "RAZORPAY_KEY_SECRET=${RZP_SECRET}" >> .env
                         echo ".env file created securely."
