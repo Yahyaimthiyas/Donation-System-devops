@@ -79,8 +79,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo '🚀 Deploying Application via Docker Compose...'
-                // Build and restart the containers
-                // Using --build to ensure code changes are picked up
+                // Self-healing: Stop and remove old/stuck containers before starting new ones
+                sh 'docker compose down --remove-orphans || true'
                 sh 'docker compose up -d --build'
             }
         }
