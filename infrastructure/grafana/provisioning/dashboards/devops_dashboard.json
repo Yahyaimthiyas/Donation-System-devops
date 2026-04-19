@@ -73,14 +73,14 @@
       ]
     },
     {
-      "title": "Container Health (RAM Usage)",
+      "title": "Server Memory Usage (Heap)",
       "type": "timeseries",
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
       "datasource": "Prometheus",
       "targets": [
         {
-          "expr": "container_memory_usage_bytes{id!=\"/\"}",
-          "legendFormat": "{{name}}"
+          "expr": "vm_memory_heap_usage",
+          "legendFormat": "Used Heap"
         }
       ],
       "fieldConfig": {
@@ -90,14 +90,14 @@
       }
     },
     {
-      "title": "Container CPU Load",
+      "title": "Server CPU Load",
       "type": "timeseries",
       "gridPos": { "h": 8, "w": 24, "x": 0, "y": 16 },
       "datasource": "Prometheus",
       "targets": [
         {
-          "expr": "rate(container_cpu_usage_seconds_total{id!=\"/\"}[1m]) * 100",
-          "legendFormat": "{{name}}"
+          "expr": "system_cpu_load * 100",
+          "legendFormat": "CPU Load (%)"
         }
       ],
       "fieldConfig": {
@@ -109,12 +109,12 @@
   ],
   "schemaVersion": 36,
   "style": "dark",
-  "tags": ["DevOps", "DonationSystem", "Advanced"],
+  "tags": ["DevOps", "DonationSystem", "Production"],
   "templating": { "list": [] },
   "time": { "from": "now-6h", "to": "now" },
   "timepicker": {},
   "timezone": "",
   "title": "DevOps Dashboard",
   "uid": "devops_monitor_1",
-  "version": 9
+  "version": 10
 }
