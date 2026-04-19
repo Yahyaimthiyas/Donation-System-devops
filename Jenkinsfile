@@ -50,6 +50,25 @@ pipeline {
             }
         }
 
+        stage('Prepare Environment') {
+            steps {
+                echo 'Creating .env file for deployment...'
+                // Ensure a .env file exists for docker-compose
+                sh '''
+                    if [ ! -f .env ]; then
+                        echo "PORT=5000" > .env
+                        echo "NODE_ENV=production" >> .env
+                        echo "MONGO_URI=mongodb://mongo:27017/donationdb" >> .env
+                        echo "JWT_SECRET=7hGk92!kLpQx#9@secureRandomKey2026" >> .env
+                        echo "REACT_APP_API_URL=http://localhost:5000" >> .env
+                        echo ".env file created with default values."
+                    else
+                        echo ".env file already exists."
+                    fi
+                '''
+            }
+        }
+
         stage('Deploy') {
             steps {
                 echo '🚀 Deploying Application via Docker Compose...'
