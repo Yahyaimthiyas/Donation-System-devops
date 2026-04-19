@@ -52,8 +52,17 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo 'Skipping deployment for now. Add your deployment logic here when ready.'
-                // sh 'npm start' or similar deployment command
+                echo '🚀 Deploying Application via Docker Compose...'
+                // Build and restart the containers
+                // Using --build to ensure code changes are picked up
+                sh 'docker compose up -d --build'
+            }
+        }
+
+        stage('Clean Up') {
+            steps {
+                echo '🧹 cleaning up dangling images...'
+                sh 'docker image prune -f'
             }
         }
     }
