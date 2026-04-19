@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        // This must match the name you set in: Manage Jenkins → Tools → NodeJS installations
-        nodejs 'NodeJS-18'
-    }
-
     environment {
         NODE_ENV = 'development'
     }
