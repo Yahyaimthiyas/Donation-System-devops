@@ -45,7 +45,7 @@ services:
     restart: unless-stopped
 
   mongodb-exporter:
-    image: percona/mongodb_exporter:latest
+    image: bitnami/mongodb-exporter:latest
     container_name: mongodb-exporter
     command:
       - '--mongodb.uri=${MONGO_URI:-mongodb://charity-mongodb:27017}'
