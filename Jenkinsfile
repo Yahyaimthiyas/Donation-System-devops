@@ -6,10 +6,12 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
+        stage('Checkout & Info') {
             steps {
                 echo 'Checking out code...'
                 checkout scm
+                sh 'node -v'
+                sh 'npm -v'
             }
         }
 

@@ -8,13 +8,13 @@ scrape_configs:
       - targets: ['localhost:9090']
 
   - job_name: 'jenkins'
-    # The default endpoint exposed by the Jenkins Prometheus Plugin
     metrics_path: '/prometheus/'
-    # Replace 'host.docker.internal:8080' with your actual Jenkins server IP and port
-    # 'host.docker.internal' is used to reach the host machine from inside the docker container
     static_configs:
-      - targets: ['host.docker.internal:8080']
+      # Option A: Replace with your actual Ubuntu Host IP
+      # Since Jenkins is in a separate container, we use host-level access
+      - targets: ['192.168.1.105:8080']
 
   - job_name: 'charity_backend'
     static_configs:
-      - targets: ['backend:5000']
+      # Option A: Replace with your actual Ubuntu Host IP
+      - targets: ['192.168.1.105:5000']
