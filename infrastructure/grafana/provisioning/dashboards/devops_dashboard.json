@@ -79,8 +79,8 @@
       "datasource": "Prometheus",
       "targets": [
         {
-          "expr": "container_memory_usage_bytes{name=~\"/?(charity.*|jenkins|prometheus|grafana|cadvisor|mongodb.*)\"}",
-          "legendFormat": "{{name}}"
+          "expr": "container_memory_usage_bytes{container_label_com_docker_compose_service=~\"backend|frontend|jenkins|prometheus|grafana|cadvisor|mongodb.*\"}",
+          "legendFormat": "{{container_label_com_docker_compose_service}}"
         }
       ],
       "fieldConfig": {
@@ -96,8 +96,8 @@
       "datasource": "Prometheus",
       "targets": [
         {
-          "expr": "rate(container_cpu_usage_seconds_total{name=~\"/?(charity.*|jenkins|prometheus|grafana|cadvisor|mongodb.*)\"}[1m]) * 100",
-          "legendFormat": "{{name}}"
+          "expr": "rate(container_cpu_usage_seconds_total{container_label_com_docker_compose_service=~\"backend|frontend|jenkins|prometheus|grafana|cadvisor|mongodb.*\"}[1m]) * 100",
+          "legendFormat": "{{container_label_com_docker_compose_service}}"
         }
       ],
       "fieldConfig": {
@@ -116,5 +116,5 @@
   "timezone": "",
   "title": "DevOps Dashboard",
   "uid": "devops_monitor_1",
-  "version": 4
+  "version": 6
 }
