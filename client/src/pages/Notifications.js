@@ -10,10 +10,8 @@ import {
   Target, 
   BellRing, 
   Clock, 
-  Trash2, 
   MailOpen,
-  Mail,
-  Filter
+  Mail
 } from 'lucide-react';
 
 const Notifications = () => {
@@ -21,7 +19,7 @@ const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [socket, setSocket] = useState(null);
+  const [, setSocket] = useState(null);
 
   useEffect(() => {
     const fetchNotifications = async () => {

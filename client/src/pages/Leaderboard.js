@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import { motion } from 'framer-motion';
-import { Trophy, Medal, Award, User, TrendingUp, IndianRupee } from 'lucide-react';
+import { Trophy, Medal, Award, User, TrendingUp } from 'lucide-react';
 
 const Leaderboard = () => {
   const [topDonors, setTopDonors] = useState([]);
   const [topBeneficiaries, setTopBeneficiaries] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [, setError] = useState('');
 
   useEffect(() => {
     const fetchLeaderboard = async () => {

@@ -4,7 +4,6 @@ import {
   HelpCircle, 
   Plus, 
   Minus, 
-  Search, 
   LifeBuoy, 
   ShieldCheck, 
   CreditCard, 

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { motion } from 'framer-motion';
-import { Heart, Globe, ShieldCheck, TrendingUp, ArrowRight } from 'lucide-react';
+import { Globe, ShieldCheck, TrendingUp, ArrowRight } from 'lucide-react';
 import heroImage from '../assets/charity_hero_modern.png'; // Note: Ensure the image is moved to assets
 
 const Home = () => {

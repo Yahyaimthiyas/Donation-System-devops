@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import { motion } from 'framer-motion';
 import { 
-  BarChart3, 
   Users, 
   Heart, 
   IndianRupee, 

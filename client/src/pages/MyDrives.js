@@ -5,13 +5,10 @@ import {
   Plus, 
   LayoutDashboard, 
   MapPin, 
-  IndianRupee, 
   Users, 
   Clock, 
   CheckCircle2, 
-  AlertCircle, 
   XCircle,
-  TrendingUp,
   ExternalLink
 } from 'lucide-react';
 import { Link } from 'react-router-dom';

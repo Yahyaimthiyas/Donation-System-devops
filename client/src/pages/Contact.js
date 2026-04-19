@@ -7,8 +7,7 @@ import {
   Send, 
   Clock, 
   MessageSquare,
-  CheckCircle2,
-  ExternalLink
+  CheckCircle2
 } from 'lucide-react';
 
 const Contact = () => {
