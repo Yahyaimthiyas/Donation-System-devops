@@ -26,11 +26,11 @@
       "datasource": "Prometheus",
       "targets": [
         {
-          "expr": "jenkins_builds_success_total",
+          "expr": "default_jenkins_builds_success_build_count_total",
           "legendFormat": "Success"
         },
         {
-          "expr": "jenkins_builds_failed_total",
+          "expr": "default_jenkins_builds_failed_build_count_total",
           "legendFormat": "Failed"
         }
       ],
@@ -73,26 +73,48 @@
       ]
     },
     {
-      "title": "Error Rate (% Status 500)",
-      "type": "gauge",
+      "title": "Container Health (RAM Usage)",
+      "type": "timeseries",
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
       "datasource": "Prometheus",
       "targets": [
         {
-          "expr": "sum(rate(http_request_duration_seconds_count{status_code=~\"5..\"}[5m])) / sum(rate(http_request_duration_seconds_count[5m])) * 100",
-          "legendFormat": "Server Errors"
+          "expr": "container_memory_usage_bytes{name=~\"charity.*|jenkins|prometheus|grafana\"}",
+          "legendFormat": "{{name}}"
         }
-      ]
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes"
+        }
+      }
+    },
+    {
+      "title": "Container CPU Load",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 16 },
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "rate(container_cpu_usage_seconds_total{name=~\"charity.*|jenkins|prometheus|grafana\"}[1m]) * 100",
+          "legendFormat": "{{name}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent"
+        }
+      }
     }
   ],
   "schemaVersion": 36,
   "style": "dark",
-  "tags": ["DevOps", "DonationSystem"],
+  "tags": ["DevOps", "DonationSystem", "Advanced"],
   "templating": { "list": [] },
   "time": { "from": "now-6h", "to": "now" },
   "timepicker": {},
   "timezone": "",
-  "title": "DevOps Monitoring Dashboard",
+  "title": "Senior DevOps Dashboard",
   "uid": "devops_monitor_1",
-  "version": 1
+  "version": 2
 }
