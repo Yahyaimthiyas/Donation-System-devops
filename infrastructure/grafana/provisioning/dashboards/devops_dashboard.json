@@ -114,7 +114,7 @@
   "time": { "from": "now-6h", "to": "now" },
   "timepicker": {},
   "timezone": "",
-  "title": "Senior DevOps Dashboard",
+  "title": "DevOps Dashboard",
   "uid": "devops_monitor_1",
   "version": 2
 }
