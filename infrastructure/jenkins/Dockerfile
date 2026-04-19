@@ -21,11 +21,9 @@ RUN apt-get update && \
 # Switch back to the jenkins user
 USER jenkins
 
-# Pre-install some common Jenkins plugins for your DevOps stack
+# Pre-install only core essentials (Removing heavy plugins like Blue Ocean for speed)
 RUN jenkins-plugin-cli --plugins \
     workflow-aggregator \
     git \
     docker-workflow \
-    prometheus \
-    nodejs \
-    blueocean
+    prometheus
