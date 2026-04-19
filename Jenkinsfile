@@ -2,12 +2,6 @@ pipeline {
     agent any
 
     environment {
-        // Securely bound credentials from Jenkins
-        MONGO_URI           = credentials('MONGO_URI')
-        JWT_SECRET          = credentials('JWT_SECRET')
-        RAZORPAY_KEY_ID      = credentials('RAZORPAY_KEY_ID')
-        RAZORPAY_KEY_SECRET  = credentials('RAZORPAY_KEY_SECRET')
-        
         PORT = '5000'
         NODE_ENV = 'production'
         REACT_APP_API_URL = 'http://172.27.240.23:5000'
@@ -61,17 +55,24 @@ pipeline {
         stage('Prepare Environment') {
             steps {
                 echo 'Creating .env file for deployment...'
-                // Ensure a .env file exists for docker-compose with SECURE values
-                sh '''
-                    echo "PORT=${PORT}" > .env
-                    echo "NODE_ENV=${NODE_ENV}" >> .env
-                    echo "MONGO_URI=${MONGO_URI}" >> .env
-                    echo "JWT_SECRET=${JWT_SECRET}" >> .env
-                    echo "REACT_APP_API_URL=${REACT_APP_API_URL}" >> .env
-                    echo "RAZORPAY_KEY_ID=${RAZORPAY_KEY_ID}" >> .env
-                    echo "RAZORPAY_KEY_SECRET=${RAZORPAY_KEY_SECRET}" >> .env
-                    echo ".env file created securely."
-                '''
+                // Pull credentials only when needed to avoid initial environment failures
+                withCredentials([
+                    string(credentialsId: 'MONGO_URI', variable: 'DB_URI'),
+                    string(credentialsId: 'JWT_SECRET', variable: 'JWT_KEY'),
+                    string(credentialsId: 'RAZORPAY_KEY_ID', variable: 'RZP_ID'),
+                    string(credentialsId: 'RAZORPAY_KEY_SECRET', variable: 'RZP_SECRET')
+                ]) {
+                    sh """
+                        echo "PORT=${PORT}" > .env
+                        echo "NODE_ENV=${NODE_ENV}" >> .env
+                        echo "MONGO_URI=${DB_URI}" >> .env
+                        echo "JWT_SECRET=${JWT_KEY}" >> .env
+                        echo "REACT_APP_API_URL=${REACT_APP_API_URL}" >> .env
+                        echo "RAZORPAY_KEY_ID=${RZP_ID}" >> .env
+                        echo "RAZORPAY_KEY_SECRET=${RZP_SECRET}" >> .env
+                        echo ".env file created securely."
+                    """
+                }
             }
         }
 
