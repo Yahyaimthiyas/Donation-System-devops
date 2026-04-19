@@ -79,7 +79,7 @@
       "datasource": "Prometheus",
       "targets": [
         {
-          "expr": "container_memory_usage_bytes{name=~\"charity.*|jenkins|prometheus|grafana\"}",
+          "expr": "container_memory_usage_bytes{name=~\"/?(charity.*|jenkins|prometheus|grafana|cadvisor|mongodb.*)\"}",
           "legendFormat": "{{name}}"
         }
       ],
@@ -96,7 +96,7 @@
       "datasource": "Prometheus",
       "targets": [
         {
-          "expr": "rate(container_cpu_usage_seconds_total{name=~\"charity.*|jenkins|prometheus|grafana\"}[1m]) * 100",
+          "expr": "rate(container_cpu_usage_seconds_total{name=~\"/?(charity.*|jenkins|prometheus|grafana|cadvisor|mongodb.*)\"}[1m]) * 100",
           "legendFormat": "{{name}}"
         }
       ],
@@ -116,5 +116,5 @@
   "timezone": "",
   "title": "DevOps Dashboard",
   "uid": "devops_monitor_1",
-  "version": 2
+  "version": 4
 }
