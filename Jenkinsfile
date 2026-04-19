@@ -2,7 +2,15 @@ pipeline {
     agent any
 
     environment {
-        NODE_ENV = 'development'
+        // Securely bound credentials from Jenkins
+        MONGO_URI           = credentials('MONGO_URI')
+        JWT_SECRET          = credentials('JWT_SECRET')
+        RAZORPAY_KEY_ID      = credentials('RAZORPAY_KEY_ID')
+        RAZORPAY_KEY_SECRET  = credentials('RAZORPAY_KEY_SECRET')
+        
+        PORT = '5000'
+        NODE_ENV = 'production'
+        REACT_APP_API_URL = 'http://172.27.240.23:5000'
     }
 
     stages {
@@ -53,18 +61,16 @@ pipeline {
         stage('Prepare Environment') {
             steps {
                 echo 'Creating .env file for deployment...'
-                // Ensure a .env file exists for docker-compose
+                // Ensure a .env file exists for docker-compose with SECURE values
                 sh '''
-                    if [ ! -f .env ]; then
-                        echo "PORT=5000" > .env
-                        echo "NODE_ENV=production" >> .env
-                        echo "MONGO_URI=mongodb://mongo:27017/donationdb" >> .env
-                        echo "JWT_SECRET=7hGk92!kLpQx#9@secureRandomKey2026" >> .env
-                        echo "REACT_APP_API_URL=http://localhost:5000" >> .env
-                        echo ".env file created with default values."
-                    else
-                        echo ".env file already exists."
-                    fi
+                    echo "PORT=${PORT}" > .env
+                    echo "NODE_ENV=${NODE_ENV}" >> .env
+                    echo "MONGO_URI=${MONGO_URI}" >> .env
+                    echo "JWT_SECRET=${JWT_SECRET}" >> .env
+                    echo "REACT_APP_API_URL=${REACT_APP_API_URL}" >> .env
+                    echo "RAZORPAY_KEY_ID=${RAZORPAY_KEY_ID}" >> .env
+                    echo "RAZORPAY_KEY_SECRET=${RAZORPAY_KEY_SECRET}" >> .env
+                    echo ".env file created securely."
                 '''
             }
         }
