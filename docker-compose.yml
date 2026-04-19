@@ -40,9 +40,7 @@ services:
 
 networks:
   devops-network:
-    name: devops-network
-    driver: bridge
-    attachable: true
+    external: true
 
 volumes:
   mongo_data:
