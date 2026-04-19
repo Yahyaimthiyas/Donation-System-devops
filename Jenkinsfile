@@ -43,15 +43,6 @@ pipeline {
             }
         }
 
-        stage('Build Frontend') {
-            steps {
-                echo 'Building frontend specifically for production deployment...'
-                dir('client') {
-                    sh 'npm run build'
-                }
-            }
-        }
-
         stage('Prepare Environment') {
             steps {
                 echo 'Creating .env file for deployment...'
@@ -71,7 +62,19 @@ pipeline {
                         echo "RAZORPAY_KEY_ID=${RZP_ID}" >> .env
                         echo "RAZORPAY_KEY_SECRET=${RZP_SECRET}" >> .env
                         echo ".env file created securely."
+                        
+                        # Copy .env to client folder for React build
+                        cp .env client/.env
                     """
+                }
+            }
+        }
+
+        stage('Build Frontend') {
+            steps {
+                echo 'Building frontend specifically for production deployment...'
+                dir('client') {
+                    sh 'npm run build'
                 }
             }
         }
