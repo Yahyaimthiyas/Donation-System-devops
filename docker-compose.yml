@@ -8,6 +8,8 @@ services:
       - "5000:5000"
     env_file:
       - .env
+    networks:
+      - devops-network
     depends_on:
       - mongo
     restart: unless-stopped
@@ -19,6 +21,8 @@ services:
       - "3000:80"
     environment:
       - REACT_APP_API_URL=http://localhost:5000
+    networks:
+      - devops-network
     depends_on:
       - backend
     restart: unless-stopped
@@ -30,7 +34,15 @@ services:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
+    networks:
+      - devops-network
     restart: unless-stopped
+
+networks:
+  devops-network:
+    name: devops-network
+    driver: bridge
+    attachable: true
 
 volumes:
   mongo_data:

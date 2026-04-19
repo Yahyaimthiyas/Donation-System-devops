@@ -10,11 +10,8 @@ scrape_configs:
   - job_name: 'jenkins'
     metrics_path: '/prometheus/'
     static_configs:
-      # Option A: Replace with your actual Ubuntu Host IP
-      # Since Jenkins is in a separate container, we use host-level access
-      - targets: ['192.168.1.105:8080']
+      - targets: ['jenkins:8080']
 
   - job_name: 'charity_backend'
     static_configs:
-      # Option A: Replace with your actual Ubuntu Host IP
-      - targets: ['192.168.1.105:5000']
+      - targets: ['charity-backend:5000']

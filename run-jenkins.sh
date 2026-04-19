@@ -14,6 +14,11 @@ if [ "$(docker ps -aq -f name=$JENKINS_CONTAINER_NAME)" ]; then
     docker rm $JENKINS_CONTAINER_NAME
 fi
 
+# Ensure the shared network exists
+echo "🌐 Checking Shared DevOps Network..."
+docker network inspect devops-network >/dev/null 2>&1 || \
+    docker network create --driver bridge --attachable devops-network
+
 echo "✅ Starting Standalone Jenkins..."
 docker run -d \
   --name $JENKINS_CONTAINER_NAME \
@@ -21,6 +26,7 @@ docker run -d \
   -p 50000:50000 \
   -v jenkins_data:/var/jenkins_home \
   -v /var/run/docker.sock:/var/run/docker.sock \
+  --network devops-network \
   --restart unless-stopped \
   $IMAGE_NAME
 
